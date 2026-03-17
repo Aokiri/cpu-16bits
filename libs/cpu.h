@@ -6,8 +6,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define NUM_REGISTERS   8           // 8 bits
-#define MEMORY_SIZE     65536       // 64 KB of memory
+#define NUM_REGISTERS   8           // 8 registers
+#define MEMORY_SIZE     65536       // 64 KB of memory (handles tasks and data at same time)
 
 // Status board lights
 #define FLAG_ZERO       (1 << 0)    // 'The answer was 0'
@@ -15,10 +15,10 @@
 #define FLAG_OVERFLOW   (1 << 2)    // 'The numbers wrapped around'
 
 typedef struct {
-    uint16_t registers[NUM_REGISTERS];  // The 8 bits (R0-R7)
+    uint16_t registers[NUM_REGISTERS];  // The 8 registers (R0-R7) with 16-bits every single one
     uint16_t pc;                        // Task checklist position (starts at task #0 - PC = 0x0000)
-    uint16_t sp;                        // Inbox tray position (stack pointer, start at top - SP = 0xFFFF)
-    uint16_t flags;                     // Status board (Z, N, O lights)
+    uint16_t sp;                        // Inbox tray position (stack pointer, start at top (LIFO) - SP = 0xFFFF)
+    uint16_t flags;                     // Status board (Z, N, O lights/flags)
     uint8_t  memory[MEMORY_SIZE];       // The "filling cabinet"
     bool     halted;                    // Is the CPU halted?
     uint64_t cycles;                    // How many tasks completed
